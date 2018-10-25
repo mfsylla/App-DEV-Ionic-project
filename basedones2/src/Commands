@@ -1,0 +1,27 @@
+//Creer un projet
+ $ionic start MyProject
+
+//Aller dans le dossier du projet
+
+$cd MyProject
+
+//Installer dependences pour angular2 et firebase la derniere version
+
+$npm install --save firebase@latest angularfire2@latest
+
+//Installer les dependences pour la camera et sauvegarder la photo dans le storage du cloud de firebase
+
+$npm install firebase @ionic-native/camera
+
+$ionic cordova plugin add cordova-plugin-camera
+
+
+//Executer le projet dans le navigateur 
+
+$ionic serve
+
+//Executer le projet dans l'emulateur ou dans le dispositif android
+
+$ionic cordova run android
+nb: si on peut pas executer l'aplication , c'ets peut être car on a encore l'ancien version de l'application installée dans le dispositif. Allez sur settings-> apps, et chercher l'application dans la liste des apps, selectionez le et suppprimez, ainsi le projet poura se compiler à nouveau.
+
