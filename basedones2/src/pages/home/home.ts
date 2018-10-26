@@ -9,6 +9,7 @@ import {Camera, CameraOptions } from '@ionic-native/camera';
 import { InfoData } from '../infodata/infodata';
 import { SellData } from '../selldata/selldata';
 
+
 interface ToDo{
   TV: string;
   MP4player : string;
@@ -34,11 +35,13 @@ export class HomePage {
     todoCollection: AngularFirestoreCollection<ToDo>;
     Any: ToDo[];
     canReorder: boolean = false;
+    queryText: string;
 
 ///////////////////////////////////////////  
    constructor(public navCtrl : NavController, public navParams: NavParams, private asf: AngularFirestore, 
     private af: AngularFireDatabase, public alertCtrl: AlertController, private camera: Camera){ 
       this.Any = navParams.get('data');
+      this.queryText = "l";
     }
 
     initializeItems() {
@@ -71,7 +74,12 @@ export class HomePage {
 
         //Show list of data at the opening of the page IN REAL TIME
         ionViewDidEnter(){
-        this.todoCollection = this.asf.collection('Any');
+        this.todoCollection = this.asf.collection('Any' 
+       // ref => ref.orderBy("TV").startAt("").endAt(""+"\uf8ff")
+        //.where("TV", ">=", "s").where("TV", "<=", '\uf8ff')
+        /*.orderBy()
+        .startAt("LG")
+        .endAt("LG"+"\uf8ff")*/);
         this.todoCollection.snapshotChanges().subscribe(todoList => {
           this.Any = todoList.map(item => {
             return {
@@ -203,5 +211,24 @@ export class HomePage {
                   }
                 }
 
+              /*  searching(word: string){
+                  this.ionViewDidEnter(word);
+                }*/
+
+                searching(ev){
+                  var word = ev.target.value;
+                  this.todoCollection = this.asf.collection('Any', 
+                  ref => ref.orderBy("TV").startAt(word).endAt(word+"\uf8ff"));
+                  this.todoCollection.snapshotChanges().subscribe(todoList => {
+                    this.Any = todoList.map(item => {
+                      return {
+                        MP4player: item.payload.doc.data().MP4player,
+                        TV: item.payload.doc.data().TV,
+                        id: item.payload.doc.id,
+                        ImageData: item.payload.doc.data().ImageData
+                      }
+                    })  
+                  })
+                }
             
         }
