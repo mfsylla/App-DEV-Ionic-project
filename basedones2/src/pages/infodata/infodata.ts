@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams , IonicPage ,Item, ItemGroup} from 'ionic-angular';
+import { NavController, NavParams , IonicPage ,Item, ItemGroup,AlertController} from 'ionic-angular';
 import { AngularFireDatabase ,AngularFireList} 
 from 'angularfire2/database';
 /* For cloud firestore test*/
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { SellData } from '../selldata/selldata';
 
 interface ToDo{
     TV: string;
@@ -24,7 +25,8 @@ export class InfoData {
     todoCollection: AngularFirestoreCollection<ToDo>;
     item: ToDo;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams,private asf: AngularFirestore) {
+    constructor(public navCtrl: NavController, public navParams: NavParams,private asf: AngularFirestore,
+      public alertCtrl: AlertController) {
         this.item = navParams.get('data');
       }
           /*
@@ -33,33 +35,58 @@ export class InfoData {
       }
         */
 
+
+
       initializeItems(){
         this.items = this.item ;
       }
 
-          // research bar filtering
-
-       getItems(ev){
-        // Reset items back to all of the items
-        this.initializeItems();
-      
-        // set val to the value of the ev target
-        var val = ev.target.value;
-
-       // if the value is an empty string don't filter the items
-        if (val && val.trim() != '') {
-        this.items = this.items.filter((item) => {
-        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
-      })
-    }
-      
-      }
-
-
- 
           ionViewWillEnter() {
             console.log('Hello Its me');
           //  TV : this.asf.doc(`Any/${this.item.id}`).get();
           }
+
+          deleteItem(item: ToDo){
+            this.asf.doc(`Any/${item.id}`).delete().then(() =>{
+              console.log(`Element supprimé: "${item.TV}"`);
+            }).catch(err => {
+              console.error(err);
+            })
+  
+            }
+
+            updateItem(item: ToDo){
+              let prompt = this.alertCtrl.create({
+                title: 'Update element',
+                message: 'Update the element',
+                inputs:[{
+                  name: 'MP4player',
+                  placeholder: 'MP4player mark'
+                },
+                {
+                  name: 'TV',
+                  placeholder: 'TV mark'
+                }], 
+                buttons:[{
+                  text:'Cancel'
+                },{
+                  text: 'Save',
+                  handler: data =>{
+                   this.nowUpdateItem(data.MP4player,data.TV,item);
+                 // this.asf.doc(`Any/${item.id}`).update({ MP4player: data.MP4player, TV: data.TV});
+                  }
+                }]
+              }).present();
+              }
+
+              nowUpdateItem(newMP4player: string, newTV: string, item: ToDo){
+                this.asf.doc(`Any/${item.id}`).update({ MP4player: newMP4player, TV: newTV});
+              }
+
+              sellPage(item: ToDo){
+                this.navCtrl.push(SellData, {
+                  data: item
+                });
+                }
 
 }

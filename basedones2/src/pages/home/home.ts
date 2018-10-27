@@ -211,9 +211,6 @@ export class HomePage {
                   }
                 }
 
-              /*  searching(word: string){
-                  this.ionViewDidEnter(word);
-                }*/
 
                 searching(ev){
                   var word = ev.target.value;
