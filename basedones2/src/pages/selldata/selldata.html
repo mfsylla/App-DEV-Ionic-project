@@ -13,9 +13,28 @@
     <p> {{ item.Quantity }} </p>
    -->
    <p> Select the quantity of each size you may want </p>
-   <select required>
-      <option *ngFor="let sizeS of TotalSize_S" [value]="pow">{{pow}}</option>
-    </select>
-   <button ion-button color="secondary" (click)="sellActions(item)">Sell</button>
+   
+   <ion-item>
+   <ion-label>Select quantity of size S</ion-label>
+   <ion-select [(ngModel)]="takeSelection.selectedSize_S" (ngModelChange)="setWanted_SizeS()" required>
+      <ion-option *ngFor="let sizeS of TotalSize_S" [value]="sizeS">{{ sizeS }}</ion-option>
+    </ion-select>
+  </ion-item>
+   
+  <ion-item>
+   <ion-label>Select quantity of size M </ion-label>
+    <ion-select [(ngModel)]="takeSelection.selectedSize_M" (ngModelChange)="setWanted_SizeM(sizeM)" required>
+       <ion-option *ngFor="let sizeM of TotalSize_M" [value]="sizeM">{{ sizeM }}</ion-option>
+     </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Select quantity of size L </ion-label>
+      <ion-select [(ngModel)]="takeSelection.selectedSize_L" (ngModelChange)="setWanted_SizeL(sizeL)" required>
+        <ion-option *ngFor="let sizeL of TotalSize_L" [value]="sizeL">{{ sizeL }}</ion-option>
+       </ion-select>
+      </ion-item>
+
+   <button ion-button color="secondary" (click)="sellActions()">Sell</button>
   </ion-content>
   
