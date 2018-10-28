@@ -22,20 +22,21 @@
 </ion-fab>
 --> 
 <ion-list>
-    <ion-item-sliding *ngFor="let item of Any">
-      <ion-item>
-          {{ item.TV }}
-          <img [src]="'data:image/jpeg;base64,' + item.ImageData"/>
-      </ion-item>
-      <ion-item-options side="right">
+    <ion-item-sliding *ngFor="let item of Clothes">
+  <!--    <ion-item> -->
+          <button ion-item (click)="detailsPage(item)">
+              <img [src]="'data:image/jpeg;base64,' + item.Image"/>
+              {{ item.Name }}
+              {{ item.TotalQuantity }}
+              {{ item.Description }}
+        
+            </button>
+     <!-- </ion-item> -->
+      
+  <!--    <ion-item-options side="right">
           <button ion-button (click)="detailsPage(item)">Details</button>
-          <button ion-button color="secondary">Sell</button>
-          <button ion-button (click)="takePhoto(item)">Take Photo</button>
       </ion-item-options>
-      <ion-item-options side="left">
-      <button ion-button (click)="updateItem(item)">Update</button>
-      <button ion-button color="danger" (click)="deleteItem(item)">Delete</button>
-    </ion-item-options>
+      -->
     </ion-item-sliding>
     <ion-fab end>
         <button ion-fab mini (click)="newItem()" ><ion-icon name="add"></ion-icon></button>

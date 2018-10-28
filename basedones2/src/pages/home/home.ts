@@ -11,10 +11,19 @@ import { SellData } from '../selldata/selldata';
 
 
 interface ToDo{
-  TV: string;
+  /*TV: string;
   MP4player : string;
   id?: string;
-  ImageData: string;
+  ImageData: string;*/
+  Name: string;
+  Price : number;
+  Image: string;
+  Size_L: number;
+  Size_S: number;
+  Size_M: number;
+  TotalQuantity: number;
+  Description: string;
+  id?: string;
 }
 ///////////////////////////////////////////
 
@@ -33,22 +42,24 @@ export class HomePage {
 
     //Variables for using database (show and treat data)
     todoCollection: AngularFirestoreCollection<ToDo>;
-    Any: ToDo[];
+    //Any: ToDo[];
+    Clothes: ToDo[];
     canReorder: boolean = false;
     queryText: string;
 
 ///////////////////////////////////////////  
    constructor(public navCtrl : NavController, public navParams: NavParams, private asf: AngularFirestore, 
     private af: AngularFireDatabase, public alertCtrl: AlertController, private camera: Camera){ 
-      this.Any = navParams.get('data');
+     // this.Any = navParams.get('data');
+     this.Clothes = navParams.get('data');
       this.queryText = "l";
     }
 
     initializeItems() {
-     this.items = this.Any ;
+ ///    this.items = this.Any ;
      //this.items = this.asf.collection('Any');
     }
- 
+ /*
     getItems(ev) {
      // Reset items back to all of the items
      this.initializeItems();
@@ -65,6 +76,7 @@ export class HomePage {
         })
      }
    }
+   */
 
     /*
     
@@ -74,19 +86,25 @@ export class HomePage {
 
         //Show list of data at the opening of the page IN REAL TIME
         ionViewDidEnter(){
-        this.todoCollection = this.asf.collection('Any' 
+        this.todoCollection = this.asf.collection('Clothes' 
        // ref => ref.orderBy("TV").startAt("").endAt(""+"\uf8ff")
         //.where("TV", ">=", "s").where("TV", "<=", '\uf8ff')
         /*.orderBy()
         .startAt("LG")
-        .endAt("LG"+"\uf8ff")*/);
+        .endAt("LG"+"\uf8ff")*/,ref => ref.orderBy("Name"));
         this.todoCollection.snapshotChanges().subscribe(todoList => {
-          this.Any = todoList.map(item => {
+          //this.Any = todoList.map(item => {
+            this.Clothes = todoList.map(item => {
             return {
-              MP4player: item.payload.doc.data().MP4player,
-              TV: item.payload.doc.data().TV,
+              Name: item.payload.doc.data().Name,
+              Description: item.payload.doc.data().Description,
               id: item.payload.doc.id,
-              ImageData: item.payload.doc.data().ImageData
+              Image: item.payload.doc.data().Image,
+              Size_L: item.payload.doc.data().Size_L,
+              Size_M: item.payload.doc.data().Size_M,
+              Size_S: item.payload.doc.data().Size_S,
+              Price: item.payload.doc.data().Price,
+              TotalQuantity: item.payload.doc.data().TotalQuantity
             }
           })  
         })
@@ -94,8 +112,8 @@ export class HomePage {
       
         //Delete a data (an item)
         deleteItem(item: ToDo){
-          this.asf.doc(`Any/${item.id}`).delete().then(() =>{
-            console.log(`Element supprimé: "${item.TV}"`);
+          this.asf.doc(`Clothes/${item.id}`).delete().then(() =>{
+            console.log(`Element supprimé: "${item.Name}"`);
           }).catch(err => {
             console.error(err);
           })
@@ -106,68 +124,67 @@ export class HomePage {
         //1- Show the window to ask values to add
           newItem(){
             let prompt = this.alertCtrl.create({
-              title: 'Add an element',
-              message: 'Choose the new element to add',
+              title: 'Add a Clothe',
+              message: 'Write its information here',
               inputs:[{
-                name: 'MP4player',
-                placeholder: 'MP4player mark'
+                name: 'Clothe_name',
+                placeholder: 'Write name....'
               },
               {
-                name: 'TV',
-                placeholder: 'TV mark'
-              }], 
+                name: 'Description',
+                placeholder: 'Write description'
+              },
+              {
+                name: 'Price',
+                placeholder: 'Write price'
+              },
+              {
+                name: 'Size S',
+                placeholder: 'Write Quantity of Size S'
+              },
+              {
+                name: 'Size M',
+                placeholder: 'Write Quantity of Size M'
+              },
+              {
+                name: 'Size L',
+                placeholder: 'Write Quantity of Size L'
+              },
+            //Image and TotalQuantity are taken after the button 
+            ], 
               buttons:[{
                 text:'Cancel'
               },{
-                text: 'Save',
+                text: 'Take photo and save',
                 handler: data =>{
-                  this.addMP4playerTV(data.MP4player,data.TV);
+                 // data.Image = this.takePhoto(data.Name);
+                  this.addClothe(data.Name,data.Description, data.Price, data.Size_S, data.Size_M, data.Size_L);
                 }
               }]
             }).present();
             }
             
             //2- Add data and information to the database
-            addMP4playerTV(MP4player: string, TV: string){
-              if(this.Any.length >0){
+            addClothe(Name: string, Description: string, Price: number, 
+              Size_S: number, Size_M: number, Size_L : number){
+           /*   if(this.Any.length >0){
                 let last = this.Any.length -1;
+              }*/
+              if(this.Clothes.length >0){
+                let last = this.Clothes.length -1;
               }
-              this.asf.collection('Any').add({MP4player, TV}).then(newItem => {
-                console.log(`Nueva tarea: "${MP4player}" (ID: ${newItem.id})`);
+              
+              var TotalQuantity = Size_L + Size_M + Size_S;
+              this.asf.collection('Clothes').add({Name, Description,Price,Size_S,Size_M,Size_L,TotalQuantity}).then(newItem => {
+                console.log(`New Clothe added : "${Name}" (ID: ${newItem.id})`);
+               // this.takePhoto(`${newItem}`);
+                
               }).catch(err => {
                 console.error(err);
               });
             }
             
-            //Updae the selected data
-            //1- Open the windows to ask new values to put on the item
-            updateItem(item: ToDo){
-              let prompt = this.alertCtrl.create({
-                title: 'Update element',
-                message: 'Update the element',
-                inputs:[{
-                  name: 'MP4player',
-                  placeholder: 'MP4player mark'
-                },
-                {
-                  name: 'TV',
-                  placeholder: 'TV mark'
-                }], 
-                buttons:[{
-                  text:'Cancel'
-                },{
-                  text: 'Save',
-                  handler: data =>{
-                   this.nowUpdateItem(data.MP4player,data.TV,item);
-                 // this.asf.doc(`Any/${item.id}`).update({ MP4player: data.MP4player, TV: data.TV});
-                  }
-                }]
-              }).present();
-              }
-              //2- Replace the data and values by the news one
-            nowUpdateItem(newMP4player: string, newTV: string, item: ToDo){
-              this.asf.doc(`Any/${item.id}`).update({ MP4player: newMP4player, TV: newTV});
-            }
+          
             
             //Go to the next page to show inforlmation in infoData.ts and infoData.html (NOT FINISHED YET, WORKING ON IT)
            detailsPage(item: ToDo){
@@ -183,46 +200,23 @@ export class HomePage {
               });
               }
 
-              async takePhoto(item: ToDo){
-              try{
-                
-                const options:CameraOptions={
-                quality: 50,
-                targetHeight: 600,
-                targetWidth: 600,
-                destinationType: this.camera.DestinationType.DATA_URL,
-                encodingType: this.camera.EncodingType.JPEG,
-                mediaType: this.camera.MediaType.PICTURE
-                } 
-                
-
-               const result = await this.camera.getPicture(options);
-
-               const image = `data:image/jpeg;base64,${result}`;
-
-               const pictures = storage().ref(`${item.MP4player}`);
-
-               pictures.putString(image, 'data_url' );
-
-               this.asf.doc(`Any/${item.id}`).update({ ImageData: result });
-                  }
-                  catch(e)
-                  { console.error(e);
-                  }
-                }
-
-
                 searching(ev){
                   var word = ev.target.value;
-                  this.todoCollection = this.asf.collection('Any', 
-                  ref => ref.orderBy("TV").startAt(word).endAt(word+"\uf8ff"));
+                  this.todoCollection = this.asf.collection('Clothes', 
+                  ref => ref.orderBy("Name").startAt(word).endAt(word+"\uf8ff"));
                   this.todoCollection.snapshotChanges().subscribe(todoList => {
-                    this.Any = todoList.map(item => {
+             //       this.Any = todoList.map(item => {
+              this.Clothes = todoList.map(item => {
                       return {
-                        MP4player: item.payload.doc.data().MP4player,
-                        TV: item.payload.doc.data().TV,
+                        Name: item.payload.doc.data().Name,
+                        Description: item.payload.doc.data().Description,
                         id: item.payload.doc.id,
-                        ImageData: item.payload.doc.data().ImageData
+                        Image: item.payload.doc.data().Image,
+                        Size_L: item.payload.doc.data().Size_L,
+                        Size_M: item.payload.doc.data().Size_M,
+                        Size_S: item.payload.doc.data().Size_S,
+                        Price: item.payload.doc.data().Price,
+                        TotalQuantity: item.payload.doc.data().TotalQuantity
                       }
                     })  
                   })

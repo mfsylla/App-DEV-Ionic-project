@@ -6,11 +6,23 @@ from 'angularfire2/database';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { SellData } from '../selldata/selldata';
+import {Camera, CameraOptions } from '@ionic-native/camera';
+import { storage, initializeApp } from 'firebase';
 
 interface ToDo{
-    TV: string;
+  /*  TV: string;
     MP4player : string;
     id?: string;
+    */
+   Name: string;
+   Price : number;
+   Image: string;
+   Size_L: number;
+   Size_S: number;
+   Size_M: number;
+   TotalQuantity: number;
+   Description: string;
+   id?: string;
   }
 
 @Component({
@@ -26,7 +38,7 @@ export class InfoData {
     item: ToDo;
 
     constructor(public navCtrl: NavController, public navParams: NavParams,private asf: AngularFirestore,
-      public alertCtrl: AlertController) {
+      public alertCtrl: AlertController, private camera: Camera) {
         this.item = navParams.get('data');
       }
           /*
@@ -36,57 +48,103 @@ export class InfoData {
         */
 
 
-
-      initializeItems(){
-        this.items = this.item ;
-      }
-
           ionViewWillEnter() {
             console.log('Hello Its me');
           //  TV : this.asf.doc(`Any/${this.item.id}`).get();
           }
-
+/********************************** Delete Item************************************************/
           deleteItem(item: ToDo){
-            this.asf.doc(`Any/${item.id}`).delete().then(() =>{
-              console.log(`Element supprimé: "${item.TV}"`);
+            this.asf.doc(`Clothes/${item.id}`).delete().then(() =>{
+              console.log(`Element supprimé: "${item.Name}"`);
             }).catch(err => {
               console.error(err);
             })
   
             }
 
+            /********************************** Update Item************************************************/
             updateItem(item: ToDo){
               let prompt = this.alertCtrl.create({
-                title: 'Update element',
-                message: 'Update the element',
+                title: 'Add a Clothe',
+                message: 'Write its information here',
                 inputs:[{
-                  name: 'MP4player',
-                  placeholder: 'MP4player mark'
+                  name: 'Clothe_name',
+                  placeholder: 'Write name....'
                 },
                 {
-                  name: 'TV',
-                  placeholder: 'TV mark'
-                }], 
+                  name: 'Description',
+                  placeholder: 'Write description'
+                },
+                {
+                  name: 'Price',
+                  placeholder: 'Write price'
+                },
+                {
+                  name: 'Size S',
+                  placeholder: 'Write Quantity of Size S'
+                },
+                {
+                  name: 'Size M',
+                  placeholder: 'Write Quantity of Size M'
+                },
+                {
+                  name: 'Size L',
+                  placeholder: 'Write Quantity of Size L'
+                },
+             //TotalQuantity is taken after the button 
+              ], 
                 buttons:[{
                   text:'Cancel'
                 },{
-                  text: 'Save',
+                  text: 'Update and save',
                   handler: data =>{
-                   this.nowUpdateItem(data.MP4player,data.TV,item);
+                   this.nowUpdateItem(data.Name,data.Description, data.Price, data.Size_S, data.Size_M, data.Size_L,item);
                  // this.asf.doc(`Any/${item.id}`).update({ MP4player: data.MP4player, TV: data.TV});
                   }
                 }]
               }).present();
               }
 
-              nowUpdateItem(newMP4player: string, newTV: string, item: ToDo){
-                this.asf.doc(`Any/${item.id}`).update({ MP4player: newMP4player, TV: newTV});
+              nowUpdateItem(newName: string, newDescription: string, newPrice: number, 
+                newSize_S: number, newSize_M: number, newSize_L : number,  item: ToDo){
+                this.asf.doc(`Clothes/${item.id}`).update({ Name: newName, Description:  newDescription, Price: newPrice, 
+                Size_S: newSize_S, Size_M: newSize_M, Size_L: newSize_L });
               }
 
+            /********************************** Sell Item************************************************/
               sellPage(item: ToDo){
                 this.navCtrl.push(SellData, {
                   data: item
                 });
                 }
+
+                async takePhoto(item: ToDo){
+                  try{
+                    
+                    const options:CameraOptions={
+                    quality: 50,
+                    targetHeight: 300,
+                    targetWidth: 300,
+                    destinationType: this.camera.DestinationType.DATA_URL,
+                    encodingType: this.camera.EncodingType.JPEG,
+                    mediaType: this.camera.MediaType.PICTURE
+                    } 
+                    
+    
+                   const result = await this.camera.getPicture(options);
+    
+                   const image = `data:image/jpeg;base64,${result}`;
+    
+                   const pictures = storage().ref(`${item.Name}`);
+    
+                   pictures.putString(image, 'data_url' );
+                  
+                  this.asf.doc(`Clothes/${item.id}`).update({ Image: result });
+                      }
+                      catch(e)
+                      { console.error(e);
+                      }
+                      
+                    }
 
 }

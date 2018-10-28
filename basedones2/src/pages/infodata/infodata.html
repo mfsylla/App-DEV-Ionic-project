@@ -1,14 +1,25 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   </ion-navbar>
   </ion-header>
   
   <ion-content padding>
    
     <h3>Salut je suis InfoData</h3>
-    <p> {{ item.TV }} </p>
-    <p> {{ item.MP4player }} </p>
+    <img [src]="'data:image/jpeg;base64,' + item.Image"/>
+    <p> {{ item.Name }} </p>
+    <p> {{ item.Description }} </p>
+    <p> {{ item.TotalQuantity }} </p>
+    <p> {{ item.Size_S }} </p>
+    <p> {{ item.Size_M }} </p>
+    <p> {{ item.Size_L }} </p>
+    <button ion-button (click)="updateItem(item)">Update</button>
+    <button ion-button color="danger" (click)="deleteItem(item)">Delete</button>
+    <button ion-button (click)="takePhoto(item)">Take a Photo</button>
+    <button ion-button color="secondary" (click)="sellPage(item)">Sell</button>
+    <button ion-button color="secondary">Command a T-shirt</button>
+
+   
    
   </ion-content>
   

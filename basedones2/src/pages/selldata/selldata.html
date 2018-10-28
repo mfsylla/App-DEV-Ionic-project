@@ -9,8 +9,13 @@
   <ion-content padding>
    
     <h3>Salut je suis SellData</h3>
-    <p> {{ value }} </p>
+   <!-- <p> {{ value }} </p>
     <p> {{ item.Quantity }} </p>
-   
+   -->
+   <p> Select the quantity of each size you may want </p>
+   <select required>
+      <option *ngFor="let sizeS of TotalSize_S" [value]="pow">{{pow}}</option>
+    </select>
+   <button ion-button color="secondary" (click)="sellActions(item)">Sell</button>
   </ion-content>
   
