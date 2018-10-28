@@ -8,10 +8,6 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Historic } from '../historic/historic';
 
 interface ToDo{
-     /*  TV: string;
-    MP4player : string;
-    id?: string;
-    */
    Name: string;
    Price : number;
    Image: string;
@@ -32,31 +28,38 @@ export class SellData {
 
     todoCollection: AngularFirestoreCollection<ToDo>;
     item: ToDo;
-    public value: number;
+
+    //Variables to get a array of available quantity to show in the dropdown list for HTML
     public TotalSize_S: number[] = [];
     public TotalSize_M: number[] = [];
     public TotalSize_L: number[] = [];
 
+    //Variables to get the quantity of each size that we want to buy
     public WantedSize_S:number = 0;
     public WantedSize_M:number = 0;
     public WantedSize_L:number = 0;
 
+  //Variable to calculate and show the total price of the shop
+    public TotalToPay:number = 0;
+
+    //Variables to pass quantity of each size selected from HTML to TS
     takeSelection = {selectedSize_S: 0 , selectedSize_M: 0 , selectedSize_L: 0}
     
     constructor(public navCtrl: NavController, public navParams: NavParams,private asf: AngularFirestore) {
-        this.item = navParams.get('data');
-        this.showAvailableSizes(this.item);
+        this.item = navParams.get('data'); //pass item of the clothe 
+        this.showAvailableSizes(this.item); //The first thing to do is to know hoy many t-shirts of each size the magazine has
       }
 
  
  ionViewWillEnter() {
     console.log('Hello Its me');
-  //  TV : this.asf.doc(`Any/${this.item.id}`).get();
   }
 
+  //Prepare de dropdown list to show in HTML and select that to sell
   showAvailableSizes(item:ToDo){
     for( var i = 0 ; i<= item.Size_S ; i++ ){
       this.TotalSize_S.push(i);
+
       console.log("TotalSize_S = "+i);
     }
     for( var i = 0 ; i<= item.Size_M ; i++ ){
@@ -69,31 +72,27 @@ export class SellData {
     }
   }
 
+  //Get the quantity of each size that we want to buy
   setWanted_SizeS(){
-    if(this.takeSelection.selectedSize_S===null)
-    {this.WantedSize_S=0;}
-    else{
     this.WantedSize_S = this.takeSelection.selectedSize_S;
     console.log( this.takeSelection.selectedSize_S);
-    }
+    this.CalculateQuantityToPay();
   }
   setWanted_SizeM(){
-    if(this.takeSelection.selectedSize_M===null)
-    {this.WantedSize_M=0;}
-    else{
     this.WantedSize_M = this.takeSelection.selectedSize_M;
     console.log( this.takeSelection.selectedSize_M);
-    }
+    this.CalculateQuantityToPay();
   }
   setWanted_SizeL(){
-    if(this.takeSelection.selectedSize_L===null)
-    {this.WantedSize_L=0;}
-    else{
     this.WantedSize_L = this.takeSelection.selectedSize_L;
     console.log(this.takeSelection.selectedSize_L);
-    }
+    this.CalculateQuantityToPay();
   }
 
+  CalculateQuantityToPay(){
+    this.TotalToPay=(this.WantedSize_S*this.item.Price)+(this.WantedSize_M*this.item.Price)+(this.WantedSize_L*this.item.Price);
+    console.log("Total To Pay is :"+this.TotalToPay);
+  }
 
   sellActions(){
 
@@ -101,10 +100,39 @@ export class SellData {
     //The function showAvailableSizes do that
 
     /**************************************Calculate totalquantity and price*******************************/
-    var TotalToPay=(this.WantedSize_S*29)+(this.WantedSize_M*29)+(this.WantedSize_L*29);
-    console.log("Total To Pay is :"+TotalToPay);
-    //Get the date of selling
+    // It is calculated thanks to the function CalculateQuantityToPay
+   
+    /*************************************** Get the date of selling***************************************/
+    var today = new Date();
+    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    //var Selt_Date = Month+"/"+Day+"/"+Year+" at "+Hour+"h"+Minutes+":"+Seconds;
+    var Selt_Date = months[today.getMonth()]+"/"+days[today.getDay()]+"/"+today.getFullYear()+" at "+today.getHours()+"h"+ today.getMinutes()+":"+today.getSeconds();
+
+    /***************************************Update item of the T-Shirt***************************************/
+
+    this.asf.doc(`Clothes/${this.item.id}`).update({ 
+      Size_S: (this.TotalSize_S.length - this.WantedSize_S -1),
+      Size_M: (this.TotalSize_M.length - this.WantedSize_M -1),
+      Size_L: (this.TotalSize_L.length - this.WantedSize_L -1),
+    });
     //Press on the sell button
+
+    /***************************************Add information to an History ***************************************/
+
+    var Name = this.item.Name;
+    var Size_S_bought = this.WantedSize_S;
+    var Size_M_bought = this.WantedSize_M;
+    var Size_L_bought = this.WantedSize_L;
+    var Selt_price = this.TotalToPay;
+    var Selt_Image = this.item.Image;
+
+    console.log(this.item.Image);
+    console.log(Selt_Image);
+
+    this.asf.collection('HistorySeltClothes').add({Name,Size_S_bought,Size_M_bought,Size_L_bought,Selt_price, Selt_Date ,Selt_Image})
+
     //Register the sell on the HistorySeltClothes 
 
     /********************************************************************************************************************* */
