@@ -16,7 +16,7 @@ interface ToDo{
     */
    Name: string;
    Price : number;
-   Image: string;
+   Image: any;
    Size_L: number;
    Size_S: number;
    Size_M: number;
