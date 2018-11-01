@@ -6,41 +6,33 @@
 </ion-header>
 
 <ion-content padding>
- <!--<ion-list>
-    <ion-item-sliding *ngFor="let item of Any">
-    <ion-item >
-    {{ item.TV }}
-    <button ion-button round item-end (click) = "deleteItem(item)" >Delete</button>
-    <button ion-button round item-end (click) = "updateItem(item)" >Update</button>
-    </ion-item>
-    </ion-item-sliding>
-  </ion-list>
-<ion-fab right bottom>
-  <button ion-fab color="primary" (click)="newItem()">
-    <ion-icon name="md-add"></ion-icon>
-  </button>
-</ion-fab>
---> 
+ 
 <ion-list>
     <ion-item-sliding *ngFor="let item of Clothes">
   <!--    <ion-item> -->
-          <button ion-item (click)="detailsPage(item)">
-              <img [src]="'data:image/jpeg;base64,' + item.Image"/>
+            <button ion-item (click)="detailsPage(item)">
+              <ion-avatar>  
+                <img [src]="'data:image/jpeg;base64,' + item.Image"/>
+              </ion-avatar> 
               {{ item.Name }}
-              {{ item.TotalQuantity }}
-              {{ item.Description }}
-        
-            </button>
-     <!-- </ion-item> -->
+                {{ item.TotalQuantity }}
+                {{ item.Description }}
+          
+              </button>
+             <!-- </ion-item> -->
       
-  <!--    <ion-item-options side="right">
+          <!--    <ion-item-options side="right">
           <button ion-button (click)="detailsPage(item)">Details</button>
       </ion-item-options>
       -->
     </ion-item-sliding>
     <ion-fab end>
-        <button ion-fab mini (click)="newItem()" ><ion-icon name="add"></ion-icon></button>
-      </ion-fab>
+        <button ion-fab mini (click)="newItem()" >
+          <ion-icon name="add">            
+          </ion-icon>
+        </button>
+    </ion-fab>
+
 </ion-list>
 
 </ion-content>
