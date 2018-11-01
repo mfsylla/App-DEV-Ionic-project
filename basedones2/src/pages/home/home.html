@@ -10,25 +10,16 @@
 <ion-list>
     <ion-item-sliding *ngFor="let item of Clothes">
   <!--    <ion-item> -->
-      <ion-list-header>Today</ion-list-header>
-        
             <button ion-item (click)="detailsPage(item)">
-              <ion-avatar>  
-                <img [src]="'data:image/jpeg;base64,' + item.Image"/>
-              </ion-avatar> 
-              <h2>{{ item.Name }} </h2>
-    
+                <ion-thumbnail>  
+                  <img [src]="'data:image/jpeg;base64,' + item.Image"/>
+                </ion-thumbnail> 
+                <h2>{{ item.Name }} </h2>
                 <p>{{ item.Description }}</p>
-                <ion-note item-end>{{ item.TotalQuantity }}</ion-note>
-              </button>
-        
-             <!-- </ion-item> -->
-      
-          <!--    <ion-item-options side="right">
-          <button ion-button (click)="detailsPage(item)">Details</button>
-      </ion-item-options>
-      -->
+                <ion-note item-end clear>{{ item.TotalQuantity }}</ion-note>
+            </button>
     </ion-item-sliding>
+    
     <ion-fab end>
         <button ion-fab mini (click)="newItem()" >
           <ion-icon name="add">            
