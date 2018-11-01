@@ -14,10 +14,10 @@
               <ion-avatar>  
                 <img [src]="'data:image/jpeg;base64,' + item.Image"/>
               </ion-avatar> 
-              {{ item.Name }}
-                {{ item.TotalQuantity }}
-                {{ item.Description }}
-          
+              <h2>{{ item.Name }} </h2>
+    
+                <p>{{ item.Description }}</p>
+                <ion-note item-end>{{ item.TotalQuantity }}</ion-note>
               </button>
              <!-- </ion-item> -->
       
