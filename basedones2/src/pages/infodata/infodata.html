@@ -4,22 +4,52 @@
   </ion-header>
   
   <ion-content padding>
-   
-    <h3>Salut je suis InfoData</h3>
-    <img [src]="'data:image/jpeg;base64,' + item.Image"/>
-    <p> {{ item.Name }} </p>
-    <p> {{ item.Description }} </p>
-    <p> {{ item.TotalQuantity }} </p>
-    <p> {{ item.Size_S }} </p>
-    <p> {{ item.Size_M }} </p>
-    <p> {{ item.Size_L }} </p>
-    <button ion-button (click)="updateItem(item)">Update</button>
-    <button ion-button color="danger" (click)="deleteItem(item)">Delete</button>
-    <button ion-button (click)="takePhoto(item)">Take a Photo</button>
-    <button ion-button color="secondary" (click)="sellPage(item)">Sell</button>
-    <button ion-button color="secondary">Command a T-shirt</button>
+    <ion-card>
+      <img [src]="'data:image/jpeg;base64,' + item.Image"/>
+      
+      <ion-card-content>
+         <h1> {{ item.Name }} </h1>
+         <p>_____________________</p>
+        <p> {{ item.Description }} </p>
+      </ion-card-content>
 
-   
-   
+      <ion-item color="secondary">
+          TOTAL QUANTITY
+        <ion-icon name='amount-size' item-end> 
+         {{ item.TotalQuantity }} 
+        </ion-icon>      
+      </ion-item>
+
+      <ion-item >
+           Size S
+        <ion-icon name='amount-size' item-end clear color="secondary"> 
+            {{ item.Size_S }}
+        </ion-icon>      
+      </ion-item>
+
+      <ion-item >
+          Size M
+       <ion-icon name='amount-size' item-end clear color="secondary"> 
+          {{ item.Size_M }}
+       </ion-icon>      
+     </ion-item>
+
+     <ion-item >
+        Size L
+     <ion-icon name='amount-size' item-end clear color="secondary"> 
+        {{ item.Size_L }}
+     </ion-icon>      
+   </ion-item>
+
+    
+      
+      <p>  </p>
+        <button ion-button (click)="updateItem(item)">Update</button>
+        <button ion-button color="danger" (click)="deleteItem(item)">Delete</button>
+        <button ion-button (click)="takePhoto(item)">Take a Photo</button>
+        <button ion-button color="secondary" (click)="sellPage(item)">Sell</button>
+        <button ion-button color="secondary">Command a T-shirt</button>
+      
+    </ion-card>
   </ion-content>
   
