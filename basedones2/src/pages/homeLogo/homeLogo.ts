@@ -8,6 +8,7 @@ import { Charges } from '../charges/charges';
 import { Objective } from '../objective/objective';
 import { Scanner } from '../scanner/scanner';
 import { Commande } from '../commande/commande';
+import { Company } from '../company_list/company_list';
 
 // Import list options
 
@@ -50,8 +51,11 @@ export class HomeLogo {
     this.navCtrl.push(Scanner);
   }
   // COMMANDES
-  doCommandes(){
-    this.navCtrl.push(Commande);
+  // doCommandes(){
+  //   this.navCtrl.push(Commande);
+  // }
+  doCompany(){
+    this.navCtrl.push(Company);
   }
 }
 

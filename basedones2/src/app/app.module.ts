@@ -16,6 +16,7 @@ import { Historic } from '../pages/historic/historic';
 import { Charges } from '../pages/charges/charges';
 import { Objective } from '../pages/objective/objective';
 import { Scanner } from '../pages/scanner/scanner';
+import { Company } from '../pages/company_list/company_list';
 import { Commande } from '../pages/commande/commande';
 import { SellData } from '../pages/selldata/selldata';
 import { History } from '../pages/history/history';
@@ -49,6 +50,7 @@ var config = {
     Charges,
     Objective,
     Scanner,
+    Company,
     Commande,
     SellData,
     History
@@ -70,6 +72,7 @@ var config = {
     Charges,
     Objective,
     Scanner,
+    Company,
     Commande,
     SellData,
     History
