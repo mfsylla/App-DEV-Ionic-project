@@ -67,7 +67,7 @@ export class History {
         //.where("TV", ">=", "s").where("TV", "<=", '\uf8ff')
         /*.orderBy()
         .startAt("LG")
-        .endAt("LG"+"\uf8ff")*/,ref => ref.orderBy("Name"));
+        .endAt("LG"+"\uf8ff")*/ )//,ref => ref.orderBy(""));
         this.todoCollection.snapshotChanges().subscribe(todoList => {
           //this.Any = todoList.map(item => {
             this.HistorySeltClothes = todoList.map(item => {

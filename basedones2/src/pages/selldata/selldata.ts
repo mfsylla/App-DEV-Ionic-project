@@ -149,6 +149,7 @@ export class SellData {
     this.asf.collection('HistorySeltClothes').add({Name,Size_S_bought,Size_M_bought,Size_L_bought,Selt_price, Selt_Date ,Selt_Image})
 
     alert.present();
+    this.navCtrl.popToRoot();
 
     //Register the sell on the HistorySeltClothes 
 
