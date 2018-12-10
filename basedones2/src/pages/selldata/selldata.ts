@@ -6,6 +6,7 @@ from 'angularfire2/database';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Historic } from '../historic/historic';
+import { AlertController } from 'ionic-angular';
 
 interface ToDo{
    Name: string;
@@ -33,6 +34,7 @@ export class SellData {
     public TotalSize_S: number[] = [];
     public TotalSize_M: number[] = [];
     public TotalSize_L: number[] = [];
+    public TotalQuantity: number[] = [];
 
     //Variables to get the quantity of each size that we want to buy
     public WantedSize_S:number = 0;
@@ -45,7 +47,7 @@ export class SellData {
     //Variables to pass quantity of each size selected from HTML to TS
     takeSelection = {selectedSize_S: 0 , selectedSize_M: 0 , selectedSize_L: 0}
     
-    constructor(public navCtrl: NavController, public navParams: NavParams,private asf: AngularFirestore) {
+    constructor(public navCtrl: NavController, public navParams: NavParams,private asf: AngularFirestore, private alertCtrl: AlertController) {
         this.item = navParams.get('data'); //pass item of the clothe 
         this.showAvailableSizes(this.item); //The first thing to do is to know hoy many t-shirts of each size the magazine has
       }
@@ -70,6 +72,10 @@ export class SellData {
       this.TotalSize_L.push(i);
       console.log("TotalSize_L = "+i);
     }
+    for( var i = 0 ; i<= item.TotalQuantity ; i++ ){
+      this.TotalQuantity.push(i);
+      console.log("TotalQuantity= "+i);
+    }
   }
 
   //Get the quantity of each size that we want to buy
@@ -91,7 +97,7 @@ export class SellData {
 
   CalculateQuantityToPay(){
     this.TotalToPay=(this.WantedSize_S*this.item.Price)+(this.WantedSize_M*this.item.Price)+(this.WantedSize_L*this.item.Price);
-    console.log("Total To Pay is :"+this.TotalToPay);
+    console.log("Total To Pay is :"+this.TotalToPay+" €");
   }
 
   sellActions(){
@@ -103,6 +109,14 @@ export class SellData {
     // It is calculated thanks to the function CalculateQuantityToPay
    
     /*************************************** Get the date of selling***************************************/
+
+    let alert = this.alertCtrl.create({
+      title: 'Selt!',
+      subTitle: 'Te article was succesfully selt!',
+      buttons: ['Ok']
+    });
+    
+
     var today = new Date();
     var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -116,6 +130,7 @@ export class SellData {
       Size_S: (this.TotalSize_S.length - this.WantedSize_S -1),
       Size_M: (this.TotalSize_M.length - this.WantedSize_M -1),
       Size_L: (this.TotalSize_L.length - this.WantedSize_L -1),
+      TotalQuantity : (this.TotalQuantity.length - this.WantedSize_S - this.WantedSize_M -this.WantedSize_L -1)
     });
     //Press on the sell button
 
@@ -132,6 +147,8 @@ export class SellData {
     console.log(Selt_Image);
 
     this.asf.collection('HistorySeltClothes').add({Name,Size_S_bought,Size_M_bought,Size_L_bought,Selt_price, Selt_Date ,Selt_Image})
+
+    alert.present();
 
     //Register the sell on the HistorySeltClothes 
 
