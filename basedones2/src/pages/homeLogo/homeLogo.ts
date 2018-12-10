@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { HomePage } from '../home/home';
-import { Historic } from '../historic/historic';
+//import { Historic } from '../historic/historic';
+import { History } from '../history/history';
 import { Charges } from '../charges/charges';
 import { Objective } from '../objective/objective';
 import { Scanner } from '../scanner/scanner';
@@ -29,12 +30,12 @@ export class HomeLogo {
 
   articlesPage(){
     this.navCtrl.push(HomePage);
-    
   }
 
   // HISTORIQUE DES VENTES
   doHistoric(){
-    this.navCtrl.push(Historic);
+    //this.navCtrl.push(Historic);
+    this.navCtrl.push(History);
   }
   // CHARGES
   doCharges(){

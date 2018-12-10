@@ -18,6 +18,7 @@ import { Objective } from '../pages/objective/objective';
 import { Scanner } from '../pages/scanner/scanner';
 import { Commande } from '../pages/commande/commande';
 import { SellData } from '../pages/selldata/selldata';
+import { History } from '../pages/history/history';
 import { Camera } from '@ionic-native/camera';
 
 var config = {
@@ -49,7 +50,8 @@ var config = {
     Objective,
     Scanner,
     Commande,
-    SellData
+    SellData,
+    History
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,8 @@ var config = {
     Objective,
     Scanner,
     Commande,
-    SellData
+    SellData,
+    History
   ],
   providers: [
     AngularFirestore,
