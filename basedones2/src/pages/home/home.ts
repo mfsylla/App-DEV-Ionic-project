@@ -114,13 +114,7 @@ export class HomePage {
         deleteItem(item: ToDo){
           this.asf.doc(`Clothes/${item.id}`).delete().then(() =>{
             console.log(`Element supprimé: "${item.Name}"`);
-            let alert = this.alertCtrl.create({
-              title: 'Deleted',
-              subTitle: 'The article was succesfully deleted',
-              buttons: ['Ok']
-            });
-            alert.present();
-            this.navCtrl.popToRoot();
+           
           }).catch(err => {
             console.error(err);
           })
