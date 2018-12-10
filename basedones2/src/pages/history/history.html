@@ -1,33 +1,24 @@
 <ion-header>
     <ion-navbar color="primary">
      <!-- <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar> -->
-     <!-- <ion-searchbar (ionInput)="searching($event)"></ion-searchbar>  -->
+     <ion-searchbar (ionInput)="searching($event)"></ion-searchbar>  
     </ion-navbar>
   </ion-header>
   
   <ion-content padding class="list-article">
-   
-  <ion-list>
-      <ion-item-sliding *ngFor="let item of HistorySeltClothes">
-    <!--    <ion-item> -->
+    <ion-list>
+  
+
+      <!-- <ion-item-sliding *ngFor="let item of HistorySeltClothes"> -->
+       <ion-item *ngFor="let item of HistorySeltClothes">
         
-                  <h2>{{ item.Name }} </h2>
-                  <h1>{{ item.Selt_Date }}</h1>
-                  <h1>{{ item.Selt_price }}</h1>
+                  <h1>{{ item.Name }} </h1>
+                  <h2>Date : {{ item.Selt_Date }}</h2>
+                  <h2>Total selt : {{ item.Selt_price }} €</h2>
+        </ion-item>
              
-      </ion-item-sliding>
+      <!-- </ion-item-sliding> -->
       
   </ion-list>
   
   </ion-content>
-  
-  
-    <!--
-     <ion-item-options side="right">
-       <button ion-button color="danger" (click)="deleteTodo(item)">
-         <ion-icon name="md-trash"></ion-icon> 
-         Supprimer
-       </button>
-     </ion-item-options>
-    
-    -->

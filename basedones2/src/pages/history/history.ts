@@ -101,10 +101,7 @@ export class History {
             this.navCtrl.push(InfoData, {
               data: item
             });
-            }
-
-            
-    
+            }    
 
                 searching(ev){
                   var word = ev.target.value;
