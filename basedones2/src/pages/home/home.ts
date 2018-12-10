@@ -127,7 +127,8 @@ export class HomePage {
               title: 'Add a Clothe',
               message: 'Write its information here',
               inputs:[{
-                name: 'Clothe_name',
+                //name: 'Clothe_name',
+                name: 'Name',
                 placeholder: 'Write name....'
               },
               {
@@ -139,15 +140,15 @@ export class HomePage {
                 placeholder: 'Write price'
               },
               {
-                name: 'Size S',
+                name: 'Size_S',
                 placeholder: 'Write Quantity of Size S'
               },
               {
-                name: 'Size M',
+                name: 'Size_M',
                 placeholder: 'Write Quantity of Size M'
               },
               {
-                name: 'Size L',
+                name: 'Size_L',
                 placeholder: 'Write Quantity of Size L'
               },
             //Image and TotalQuantity are taken after the button 
