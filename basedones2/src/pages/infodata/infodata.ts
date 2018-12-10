@@ -56,6 +56,12 @@ export class InfoData {
           deleteItem(item: ToDo){
             this.asf.doc(`Clothes/${item.id}`).delete().then(() =>{
               console.log(`Element supprimé: "${item.Name}"`);
+              let alert = this.alertCtrl.create({
+                title: 'Deleted',
+                subTitle: 'The article was succesfully deleted',
+                buttons: ['Ok'] });
+                alert.present();
+                this.navCtrl.popToRoot();
             }).catch(err => {
               console.error(err);
             })
@@ -65,10 +71,10 @@ export class InfoData {
             /********************************** Update Item************************************************/
             updateItem(item: ToDo){
               let prompt = this.alertCtrl.create({
-                title: 'Add a Clothe',
+                title: 'Update a Clothe',
                 message: 'Write its information here',
                 inputs:[{
-                  name: 'Clothe_name',
+                  name: 'Name',
                   placeholder: 'Write name....'
                 },
                 {
@@ -80,15 +86,15 @@ export class InfoData {
                   placeholder: 'Write price'
                 },
                 {
-                  name: 'Size S',
+                  name: 'Size_S',
                   placeholder: 'Write Quantity of Size S'
                 },
                 {
-                  name: 'Size M',
+                  name: 'Size_M',
                   placeholder: 'Write Quantity of Size M'
                 },
                 {
-                  name: 'Size L',
+                  name: 'Size_L',
                   placeholder: 'Write Quantity of Size L'
                 },
              //TotalQuantity is taken after the button 

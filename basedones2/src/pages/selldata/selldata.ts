@@ -112,7 +112,7 @@ export class SellData {
 
     let alert = this.alertCtrl.create({
       title: 'Selt!',
-      subTitle: 'Te article was succesfully selt!',
+      subTitle: 'The article was succesfully selt!',
       buttons: ['Ok']
     });
     

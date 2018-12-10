@@ -114,6 +114,13 @@ export class HomePage {
         deleteItem(item: ToDo){
           this.asf.doc(`Clothes/${item.id}`).delete().then(() =>{
             console.log(`Element supprimé: "${item.Name}"`);
+            let alert = this.alertCtrl.create({
+              title: 'Deleted',
+              subTitle: 'The article was succesfully deleted',
+              buttons: ['Ok']
+            });
+            alert.present();
+            this.navCtrl.popToRoot();
           }).catch(err => {
             console.error(err);
           })
@@ -156,7 +163,7 @@ export class HomePage {
               buttons:[{
                 text:'Cancel'
               },{
-                text: 'Take photo and save',
+                text: 'Save',
                 handler: data =>{
                  // data.Image = this.takePhoto(data.Name);
                   this.addClothe(data.Name,data.Description, data.Price, data.Size_S, data.Size_M, data.Size_L);
@@ -175,7 +182,7 @@ export class HomePage {
                 let last = this.Clothes.length -1;
               }
               
-              var TotalQuantity = Size_L + Size_M + Size_S;
+              var TotalQuantity = Number(Size_L) + Number(Size_M )+ Number(Size_S);
               this.asf.collection('Clothes').add({Name, Description,Price,Size_S,Size_M,Size_L,TotalQuantity}).then(newItem => {
                 console.log(`New Clothe added : "${Name}" (ID: ${newItem.id})`);
                // this.takePhoto(`${newItem}`);
