@@ -22,6 +22,8 @@ import { SellData } from '../pages/selldata/selldata';
 import { History } from '../pages/history/history';
 import { Camera } from '@ionic-native/camera';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 var config = {
   /*apiKey: "AIzaSyDT7pML9IY9PZslUnTOLGU8pftS-hQ5yxA",
   authDomain: "myapp-f3866.firebaseapp.com",
@@ -83,7 +85,8 @@ var config = {
     SplashScreen,
     AngularFireDatabase,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    InAppBrowser
   ]
 })
 export class AppModule {}
