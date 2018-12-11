@@ -146,6 +146,13 @@ export class InfoData {
                    pictures.putString(image, 'data_url' );
                   
                   this.asf.doc(`Clothes/${item.id}`).update({ Image: result });
+
+                  let alert = this.alertCtrl.create({
+                    title: 'Great!',
+                    subTitle: 'The photon was taken',
+                    buttons: ['Ok'] });
+                    alert.present();
+                    this.navCtrl.pop();
                       }
                       catch(e)
                       { console.error(e);
