@@ -22,4 +22,12 @@ export class Company {
   HMWebPage(){
     const browser =  this.inAppBrowser.create("https://www2.hm.com/fr_fr/index.html",'_self');
   }
+
+  DecathlonWebPage(){
+    const browser =  this.inAppBrowser.create("https://www.decathlon.fr/",'_self');
+  }
+
+  FootLockerWebPage(){
+    const browser =  this.inAppBrowser.create("https://www.footlocker.fr/fr/page-d-accueil",'_self');
+  }
  }
