@@ -82,6 +82,7 @@ export class InfoData {
                   placeholder: 'Write description'
                 },
                 {
+                  
                   name: 'Price',
                   placeholder: 'Write price'
                 },
@@ -113,8 +114,15 @@ export class InfoData {
 
               nowUpdateItem(newName: string, newDescription: string, newPrice: number, 
                 newSize_S: number, newSize_M: number, newSize_L : number,  item: ToDo){
+                  var totalquantity = Number(newSize_L) + Number(newSize_M )+ Number(newSize_S);
                 this.asf.doc(`Clothes/${item.id}`).update({ Name: newName, Description:  newDescription, Price: newPrice, 
-                Size_S: newSize_S, Size_M: newSize_M, Size_L: newSize_L });
+                Size_S: newSize_S, Size_M: newSize_M, Size_L: newSize_L , TotalQuantity : totalquantity });
+                let alert = this.alertCtrl.create({
+                  title: 'Great!',
+                  subTitle: 'The article was updated',
+                  buttons: ['Ok'] });
+                  alert.present();
+                  this.navCtrl.pop();
               }
 
             /********************************** Sell Item************************************************/
